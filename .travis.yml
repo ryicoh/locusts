@@ -9,11 +9,9 @@ before_install:
 
 install:
   - docker build -t $IMAGE_NAME -f ./Dockerfile .
-
-after_install:
-  - docker tag $IMAGE_NAME $DOCKER_USER/$IMAGE_NAME:$TRAVIS_BRANCH
+  - docker tag $IMAGE_NAME $DOCKER_USER/$IMAGE_NAME:$(echo $TRAVIS_COMMIT | head -c 7)
   - docker tag $IMAGE_NAME $DOCKER_USER/$IMAGE_NAME:latest
-  - docker push $DOCKER_USER/$IMAGE_NAME:$CIRCLE_TAG
+  - docker push $DOCKER_USER/$IMAGE_NAME:$(echo $TRAVIS_COMMIT | head -c 7)
   - docker push $DOCKER_USER/$IMAGE_NAME:latest
 
 script: echo done!
