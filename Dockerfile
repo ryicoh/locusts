@@ -1,19 +1,16 @@
-FROM python:2.7.8
+FROM python:3.7.3
 
-# Add the external tasks directory into /tasks
-ADD locust-tasks /locust-tasks
+WORKDIR locust-tasks
+ADD locust-tasks/requirements.txt .
 
-RUN apt-get install libevent-dev
-RUN pip install --upgrade cython
+RUN apt-get update && \
+    apt-get install libevent-dev && \
+    pip install -r /locust-tasks/requirements.txt
 
-# Install the required dependencies via pip
-RUN pip install -r /locust-tasks/requirements.txt
+COPY locust-tasks .
 
-# Expose the required Locust ports
 EXPOSE 5557 5558 8089
 
-# Set script to be executable
-RUN chmod 755 /locust-tasks/run.sh
+RUN chmod 755 ./run.sh
 
-# Start Locust using LOCUS_OPTS environment variable
 ENTRYPOINT ["/locust-tasks/run.sh"]

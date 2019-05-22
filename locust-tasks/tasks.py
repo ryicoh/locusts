@@ -1,6 +1,5 @@
 import uuid
 import os
-import encode
 
 from datetime import datetime
 from locust import HttpLocust, TaskSet, task
